@@ -1,0 +1,10 @@
+{
+  "name": "@turbo-tomato/api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "FastAPI backend for the Tomato V3 app",
+  "main": "index.js",
+  "dependencies": {
+    "fastify": "^5.6.2"
+  }
+}
