@@ -3,8 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "description": "FastAPI backend for the Tomato V3 app",
-  "main": "index.js",
+  "type": "module",
+  "main": "server.ts",
+  "scripts": {
+    "start": "tsx watch index.ts"
+  },
   "dependencies": {
     "fastify": "^5.6.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0"
   }
 }
