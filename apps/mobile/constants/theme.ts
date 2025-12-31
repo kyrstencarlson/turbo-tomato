@@ -1,31 +1,6 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
+import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
-};
+import { MD3DarkTheme, MD3LightTheme, useTheme } from 'react-native-paper';
 
 export const Fonts = Platform.select({
   ios: {
@@ -44,10 +19,40 @@ export const Fonts = Platform.select({
     rounded: 'normal',
     mono: 'monospace',
   },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
 });
+
+export type AppTheme = typeof CombinedDefaultTheme;
+
+export const CombinedDefaultTheme = {
+  ...DefaultTheme,
+  ...MD3LightTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    ...MD3LightTheme.colors,
+    primary: '#9C27B0', // Purple
+    secondary: '#E91E63', // Pink
+    info: '#2196F3', // Blue
+    warning: '#FF9800', // Orange
+    error: '#F44336', // Red
+    success: '#4CAF50', // Green
+  },
+  roundness: 5,
+};
+
+export const CombinedDarkTheme = {
+  ...DarkTheme,
+  ...MD3DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    ...MD3DarkTheme.colors,
+    primary: '#9C27B0', // Purple
+    secondary: '#E91E63', // Pink
+    info: '#2196F3', // Blue
+    warning: '#FF9800', // Orange
+    error: '#F44336', // Red
+    success: '#4CAF50', // Green
+  },
+  roundness: 5,
+};
+
+export const useAppTheme = () => useTheme<AppTheme>();
