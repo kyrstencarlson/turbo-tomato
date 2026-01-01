@@ -1,26 +1,41 @@
-import { getInstruments } from '@/api/instruments';
-import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { FlatList, View, Text } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+
+import SignOutButton from '@/components/social-auth/sign-out-button';
+import { useAuthContext } from '@/hooks/use-auth-context';
 
 export default function HomeScreen() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['instruments'],
-    queryFn: getInstruments,
-  });
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+  const { profile, user } = useAuthContext();
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 50 }}>
-      <FlatList data={data} renderItem={({ item }) => <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.name}</Text>} />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.titleContainer}>
+        <Text variant="titleLarge">Welcome!</Text>
+      </View>
+      <View style={styles.stepContainer}>
+        <Text variant="titleMedium">Email</Text>
+        <Text>{user?.email}</Text>
+      </View>
+      <SignOutButton />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  stepContainer: {
+    gap: 8,
+    marginBottom: 8,
+  },
+  reactLogo: {
+    height: 178,
+    width: 290,
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+  },
+});

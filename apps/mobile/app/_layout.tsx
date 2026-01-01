@@ -1,40 +1,40 @@
-import 'react-native-reanimated';
-//
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import 'react-native-reanimated';
 
-import { CombinedDarkTheme, CombinedDefaultTheme } from '@/constants/theme';
+import { SplashScreenController } from '@/components/splash-screen-controller';
+import { useAuthContext } from '@/hooks/use-auth-context';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { PaperProvider } from 'react-native-paper';
+import AuthProvider from '@/providers/auth-provider';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+// Separate RootNavigator so we can access the AuthContext
+function RootNavigator() {
+  const { isLoggedIn } = useAuthContext();
 
-export const QUERY_CLIENT = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1, // Retry failed requests once
-    },
-  },
-});
+  return (
+    <Stack>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const isThemeDark = colorScheme === 'dark';
-  const theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
+
   return (
-    <PaperProvider theme={theme}>
-      <ThemeProvider value={isThemeDark ? DarkTheme : DefaultTheme}>
-        <QueryClientProvider client={QUERY_CLIENT}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-          <StatusBar style="auto" />
-        </QueryClientProvider>
-      </ThemeProvider>
-    </PaperProvider>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <AuthProvider>
+        <SplashScreenController />
+        <RootNavigator />
+        <StatusBar style="auto" />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
