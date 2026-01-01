@@ -1,11 +1,11 @@
-import { useAppTheme } from '@/constants/theme';
-import { supabase } from '@/utils/supabase';
-import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
+import { supabase } from '@/utils/supabase';
+import { Button, Icon, IconButton, Text, TextInput } from 'react-native-paper';
+import { useAppTheme } from '@/constants/theme';
+import { router } from 'expo-router';
 
-export default function Auth() {
+export default function RegisterScreen() {
   const theme = useAppTheme();
 
   const [email, setEmail] = useState('');
@@ -56,17 +56,10 @@ export default function Auth() {
           style={{ ...styles.input, marginBottom: 8 }}
           keyboardType="email-address"
           autoCapitalize="none"
-          outlineColor={email.length && emailValid ? theme.colors.primary : theme.colors.error}
           disabled={loading}
         />
 
-        <Button
-          mode="text"
-          onPress={() => {
-            Alert.alert('Forgot Password?');
-          }}
-          style={styles.forgotPasswordButton}
-          disabled={loading || !emailValid}>
+        <Button mode="text" onPress={() => signUpWithEmail()} style={styles.forgotPasswordButton} disabled={loading || !emailValid}>
           Forgot Password?
         </Button>
 
@@ -94,9 +87,7 @@ export default function Auth() {
 
         <Button
           mode="outlined"
-          onPress={() => {
-            Alert.alert('Login with Code');
-          }}
+          onPress={signUpWithEmail}
           style={[styles.codeLoginButton, { borderColor: theme.colors.primary }]}
           disabled={loading || !emailValid}>
           Login with Code
@@ -109,7 +100,7 @@ export default function Auth() {
           color: theme.colors.primary,
           marginBottom: 25,
         }}
-        onPress={() => router.replace('(auth)/register')}>
+        onPress={signUpWithEmail}>
         Sign Up
       </Text>
     </View>

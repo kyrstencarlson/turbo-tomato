@@ -14,11 +14,13 @@ function RootNavigator() {
 
   return (
     <Stack>
+      <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)/login" options={{ title: 'Sign In', headerTransparent: true, headerBackButtonDisplayMode: 'minimal' }} />
+        <Stack.Screen name="(auth)/register" options={{ title: 'Sign Up', headerTransparent: true, headerBackButtonDisplayMode: 'minimal' }} />
+      </Stack.Protected>
       <Stack.Protected guard={isLoggedIn}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack.Protected>
-      <Stack.Protected guard={!isLoggedIn}>
-        <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Screen name="+not-found" />
     </Stack>
